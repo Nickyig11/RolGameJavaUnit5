@@ -1,230 +1,129 @@
 # RolGameJavaUnit5
 
-## Introducción
-RolCombat es un juego de rol simple donde el jugador controla a un personaje que debe luchar contra enemigos para avanzar y ganar experiencia. El juego está desarrollado en Java y utiliza la consola como interfaz de usuario.
+## Introduction  
+**RolCombat** is a simple RPG game where the player controls a character that must fight enemies to progress and gain experience. The game is developed in Java and written in Spanish, using the console as the user interface.
 
-## Instrucciones de Uso
+---
 
-1. Abre el proyecto en tu IDE preferido (vscode en mi caso.).
-2. Ejecuta la clase `Main` para iniciar el juego.
-3. Sigue las instrucciones que se muestran en la consola para interactuar con el juego.
+## 📖 Instructions for Use  
+1. Open the project in your preferred IDE (I use VS Code).  
+2. Run the `Main` class to start the game.  
+3. Follow the instructions displayed on the console to interact with the game.  
 
-## Clases Utilizadas
-- `Main`: Clase principal que ejecuta el juego.
-- `Jugador`: Representa al jugador y contiene métodos para manejar su inventario y estadísticas.
-- `Enemigo`: Representa a los diferentes enemigos con los que el jugador debe luchar.
-- `Item`: Clase que define los elementos que el jugador puede equipar en su inventario.
+---
+
+## 🛠️ Classes Used  
+- **`Main`**: The main class that runs the game.  
+- **`Jugador` (Player)**: Represents the player and contains methods for managing their inventory and stats.  
+- **`Enemigo` (Enemy)**: Represents the different enemies the player must fight.  
+- **`Item`**: Class that defines the items the player can equip in their inventory.  
 
 ![Alt text](image.png)
 
+---
 
+## 🎒 Available Items  
+1. **Sword**:  
+   - Description: A sword that provides medium damage in combat.  
+   - Dodge Rate: Low  
 
-## Items Disponibles
-1. **Espada**:
-   - Descripción: Esta espada proporciona un daño medio en combate.
-   - Índice de Esquiva: Bajo
+2. **Axe**:  
+   - Description: A powerful weapon that deals high damage in combat.  
+   - Dodge Rate: Medium  
 
-2. **Hacha**:
-   - Descripción: Un arma potente que causa un daño alto en combate.
-   - Índice de Esquiva: Medio
+3. **Dagger**:  
+   - Description: A swift dagger that deals quick damage.  
+   - Dodge Rate: High  
 
-3. **Daga**:
-   - Descripción: Una daga ágil que inflige daño rápidamente.
-   - Índice de Esquiva: Alto
+---
 
-## Enemigos
-- El juego cuenta con diferentes tipos de enemigos, cada uno con sus propias habilidades y características.
+## ⚔️ Enemies  
+The game features different types of enemies, each with unique abilities and characteristics.
 
-## Codigo del Main
+---
+
+## 💻 Main Code  
 ```java
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Main {
     final static Scanner scanner = new Scanner(System.in);
     final static Random random = new Random();
-    final static Jugador primerJugador = new Jugador("", "personaje invencible que "
-            + "elimina a cualquier Enemigo de one shot", 10, 20);
+    final static Jugador primerJugador = new Jugador("", "an invincible character that "
+            + "can eliminate any enemy in one shot", 10, 20);
 
-    final static Item espada = new Item("espada", "esta bien fuelte este arma");
-    final static Item hacha = new Item("hacha", "esta bien pa cortar madera y cabezas");
-    final static Item daga = new Item("daga", "pa meter apuñalaitas");
+    final static Item sword = new Item("sword", "a strong weapon for combat");
+    final static Item axe = new Item("axe", "great for chopping wood and heads");
+    final static Item dagger = new Item("dagger", "perfect for quick stabs");
 
-    final static Enemigo primerEnemigo = new Enemigo("pepe", 25, random.nextInt(6) + 1);
+    final static Enemigo firstEnemy = new Enemigo("pepe", 25, random.nextInt(6) + 1);
 
     public static void main(String[] args) {
-        System.out.println("Cual es tu nombre");
-        String nombre = scanner.next();
-        primerJugador.addNombre(nombre);
+        System.out.println("What is your name?");
+        String name = scanner.next();
+        primerJugador.addNombre(name);
 
-        primerJugador.addItemAlInventario(espada, 0);
-        primerJugador.addItemAlInventario(hacha, 1);
-        primerJugador.addItemAlInventario(daga, 2);
+        primerJugador.addItemAlInventario(sword, 0);
+        primerJugador.addItemAlInventario(axe, 1);
+        primerJugador.addItemAlInventario(dagger, 2);
 
-        boolean continuar = true;
-        String accion = "";
-        while (continuar) {
-            System.out
-                    .println("que quieres hacer ahora: \"Continuar\" partida, \"Equipar\" item, \"Terminar\" partida");
-            accion = scanner.next();
-            switch (accion.toLowerCase()) {
-                case "continuar":
-                    continuar();
+        boolean continueGame = true;
+        String action = "";
+        while (continueGame) {
+            System.out.println("What do you want to do now? \"Continue\" the game, \"Equip\" an item, or \"End\" the game");
+            action = scanner.next();
+            switch (action.toLowerCase()) {
+                case "continue":
+                    continueGame();
                     break;
 
-                case "equipar":
-                    System.out.println("que arma quieres equipar");
+                case "equip":
+                    System.out.println("Which weapon do you want to equip?");
                     primerJugador.listarInventario();
 
-                    String itemSeleccionado = scanner.next();
-                    /*
-                     * Esto lo que hace es que lista toda la lista y compara el nombre para equipar
-                     * ese item
-                     */
+                    String selectedItem = scanner.next();
                     for (int i = 0; i < primerJugador.getInventario().length; i++) {
                         if (primerJugador.getInventario()[i] != null) {
-                            if (itemSeleccionado.equals(primerJugador.getInventario()[i].getName())) {
+                            if (selectedItem.equals(primerJugador.getInventario()[i].getName())) {
                                 primerJugador.addItemEquipado(primerJugador.getInventario()[i]);
                             }
                         }
                     }
-
                     break;
 
-                case "terminar":
-                    System.out.println("se acabo");
-                    continuar = false;
+                case "end":
+                    System.out.println("Game over");
+                    continueGame = false;
                     break;
-
             }
         }
-
     }
 
-    public static void continuar() {
+    public static void continueGame() {
+        while (firstEnemy.getEstadoDeVida() && primerJugador.getEstadoDeVida()) {
+            int enemyDamage = random.nextInt(3) + 1;
+            int playerDamage = 0;
 
-        while (primerEnemigo.getEstadoDeVida() == true && primerJugador.getEstadoDeVida() == true) {
-            int dañoEnemigo = random.nextInt(3) + 1;
-            int dañoJugador = 0;
-
-            if (primerJugador.getItemEquipado() == hacha) {
-                dañoJugador = random.nextInt(6) + 1;
-            } else if (primerJugador.getItemEquipado() == daga) {
-                dañoJugador = random.nextInt(2) + 1;
-            } else if (primerJugador.getItemEquipado() == espada) {
-                dañoJugador = random.nextInt(4) + 1;
+            if (primerJugador.getItemEquipado() == axe) {
+                playerDamage = random.nextInt(6) + 1;
+            } else if (primerJugador.getItemEquipado() == dagger) {
+                playerDamage = random.nextInt(2) + 1;
+            } else if (primerJugador.getItemEquipado() == sword) {
+                playerDamage = random.nextInt(4) + 1;
             }
 
-            primerJugador.luchar(primerEnemigo, dañoEnemigo, dañoJugador);
+            primerJugador.luchar(firstEnemy, enemyDamage, playerDamage);
 
-            System.out.printf("El jugador le quita %d puntos de vida al enemigo y el jugador recibe %d pundo de daño\n",
-                    dañoJugador, dañoEnemigo);
+            System.out.printf("The player deals %d damage to the enemy and receives %d damage in return\n",
+                    playerDamage, enemyDamage);
         }
         primerJugador.getNivel();
-        if (primerJugador.getEstadoDeVida() == false) {
-            System.out.printf("Has muerto el ganador es el enemigo %s \n\n", primerEnemigo.getName());
-        } else if (primerEnemigo.getEstadoDeVida() == false) {
-            System.out.printf("El enemigo %s a muerto has ganado %s\n", primerEnemigo.getName(),
+        if (!primerJugador.getEstadoDeVida()) {
+            System.out.printf("You have died. The winner is the enemy %s \n\n", firstEnemy.getName());
+        } else if (!firstEnemy.getEstadoDeVida()) {
+            System.out.printf("The enemy %s has been defeated. You won, %s!\n", firstEnemy.getName(),
                     primerJugador.getNombre());
         }
-
     }
-
 }
-
-public class Main {
-    final static Scanner scanner = new Scanner(System.in);
-    final static Random random = new Random();
-    final static Jugador primerJugador = new Jugador("", "personaje invencible que "
-            + "elimina a cualquier Enemigo de one shot", 10, 20);
-
-    final static Item espada = new Item("espada", "esta bien fuelte este arma");
-    final static Item hacha = new Item("hacha", "esta bien pa cortar madera y cabezas");
-    final static Item daga = new Item("daga", "pa meter apuñalaitas");
-
-    final static Enemigo primerEnemigo = new Enemigo("pepe", 25, random.nextInt(6) + 1);
-
-    public static void main(String[] args) {
-        System.out.println("Cual es tu nombre");
-        String nombre = scanner.next();
-        primerJugador.addNombre(nombre);
-
-        primerJugador.addItemAlInventario(espada, 0);
-        primerJugador.addItemAlInventario(hacha, 1);
-        primerJugador.addItemAlInventario(daga, 2);
-
-        boolean continuar = true;
-        String accion = "";
-        while (continuar) {
-            System.out
-                    .println("que quieres hacer ahora: \"Continuar\" partida, \"Equipar\" item, \"Terminar\" partida");
-            accion = scanner.next();
-            switch (accion.toLowerCase()) {
-                case "continuar":
-                    continuar();
-                    break;
-
-                case "equipar":
-                    System.out.println("que arma quieres equipar");
-                    primerJugador.listarInventario();
-
-                    String itemSeleccionado = scanner.next();
-                    /*
-                     * Esto lo que hace es que lista toda la lista y compara el nombre para equipar
-                     * ese item
-                     */
-                    for (int i = 0; i < primerJugador.getInventario().length; i++) {
-                        if (primerJugador.getInventario()[i] != null) {
-                            if (itemSeleccionado.equals(primerJugador.getInventario()[i].getName())) {
-                                primerJugador.addItemEquipado(primerJugador.getInventario()[i]);
-                            }
-                        }
-                    }
-
-                    break;
-
-                case "terminar":
-                    System.out.println("se acabo");
-                    continuar = false;
-                    break;
-
-            }
-        }
-
-    }
-
-    public static void continuar() {
-
-        while (primerEnemigo.getEstadoDeVida() == true && primerJugador.getEstadoDeVida() == true) {
-            int dañoEnemigo = random.nextInt(3) + 1;
-            int dañoJugador = 0;
-
-            if (primerJugador.getItemEquipado() == hacha) {
-                dañoJugador = random.nextInt(6) + 1;
-            } else if (primerJugador.getItemEquipado() == daga) {
-                dañoJugador = random.nextInt(2) + 1;
-            } else if (primerJugador.getItemEquipado() == espada) {
-                dañoJugador = random.nextInt(4) + 1;
-            }
-
-            primerJugador.luchar(primerEnemigo, dañoEnemigo, dañoJugador);
-
-            System.out.printf("El jugador le quita %d puntos de vida al enemigo y el jugador recibe %d pundo de daño\n",
-                    dañoJugador, dañoEnemigo);
-        }
-        primerJugador.getNivel();
-        if (primerJugador.getEstadoDeVida() == false) {
-            System.out.printf("Has muerto el ganador es el enemigo %s \n\n", primerEnemigo.getName());
-        } else if (primerEnemigo.getEstadoDeVida() == false) {
-            System.out.printf("El enemigo %s a muerto has ganado %s\n", primerEnemigo.getName(),
-                    primerJugador.getNombre());
-        }
-
-    }
-
-}
-
-
-```
